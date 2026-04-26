@@ -2,96 +2,696 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>寻猕探心 · 修文猕猴桃溯源</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>寻弥探心 · 修文贵长猕猴桃 | 一物一码溯源</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-            background: linear-gradient(135deg, #f0f5eb 0%, #e8f5e9 100%);
-            min-height: 100vh;
+            background-color: #F9F6EF;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #2C2A29;
+            line-height: 1.4;
+        }
+
+        /* 模拟设计稿滚动条风格 */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #E8E2D8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #B1A28B;
+            border-radius: 4px;
+        }
+
+        /* 优雅容器 */
+        .app {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #FFFFFF;
+            box-shadow: 0 0 40px rgba(0,0,0,0.03);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 背景纹理 (手作纸感) */
+        .bg-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(circle at 20% 30%, rgba(210, 190, 150, 0.03) 2%, transparent 2.5%);
+            background-size: 28px 28px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 所有内容都在相对层级之上 */
+        .content {
+            position: relative;
+            z-index: 2;
+            background: transparent;
+        }
+
+        /* ========== 顶部品牌区 ========== */
+        .brand-header {
+            padding: 24px 20px 12px 20px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #FDF8F0 100%);
+            border-bottom: 1px solid #EFE5D9;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: #366B4A;
+            border-radius: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 12px rgba(54, 107, 74, 0.12);
+        }
+
+        .logo-icon img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+        }
+
+        .logo-text h1 {
+            font-size: 26px;
+            font-weight: 600;
+            font-family: 'Noto Serif SC', serif;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, #2F5D45, #5C8F6A);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .sub-brand {
+            font-size: 12px;
+            color: #9E8D74;
+            letter-spacing: 1px;
+            font-weight: 400;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sub-brand span {
+            background: #F0EBE3;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 500;
+            color: #5F4C38;
+        }
+
+        /* 主视觉卡片（融合背景图气质） */
+        .hero-card {
+            margin: 12px 20px 0 20px;
+            background: #F5F0E8;
+            border-radius: 32px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .hero-bg {
+            background-image: url('https://raw.githubusercontent.com/LL-tt139/xunmi/main/%E8%83%8C%E6%99%AF%E5%9B%BE.jpg');
+            background-size: cover;
+            background-position: center 30%;
+            background-repeat: no-repeat;
+            padding: 28px 20px 32px;
+            position: relative;
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 100%);
+            pointer-events: none;
+            border-radius: 32px;
+        }
+
+        .fruit-badge {
+            position: relative;
+            z-index: 2;
+            align-self: flex-start;
+            background: rgba(255,255,240,0.85);
+            backdrop-filter: blur(8px);
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #3B5C47;
+            margin-bottom: 12px;
+            border: 0.5px solid rgba(100,130,90,0.3);
+        }
+
+        .hero-title {
+            position: relative;
+            z-index: 2;
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'Noto Serif SC', serif;
+            color: white;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            letter-spacing: -0.3px;
+            line-height: 1.2;
+        }
+
+        .hero-sub {
+            position: relative;
+            z-index: 2;
+            color: rgba(255,255,245,0.9);
+            font-size: 13px;
+            margin-top: 6px;
+            font-weight: 400;
+        }
+
+        /* 溯源档案卡片 */
+        .trace-section {
+            margin: 24px 20px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .section-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+            font-family: 'Noto Serif SC', serif;
+            color: #2B4F3A;
+            letter-spacing: -0.2px;
+            border-left: 4px solid #CFA66D;
+            padding-left: 12px;
+        }
+
+        .tag-highlight {
+            background: #EFE5D9;
+            border-radius: 50px;
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #846B4C;
+        }
+
+        .info-grid {
+            background: #FDFBF8;
+            border-radius: 28px;
+            border: 1px solid #EFE5D9;
+            padding: 18px 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        .grid-two {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px 20px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #B29E82;
+        }
+
+        .info-value {
+            font-weight: 600;
+            font-size: 15px;
+            color: #2D3E2C;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .seal-badge {
+            background: #E9DFD2;
+            border-radius: 14px;
+            padding: 2px 10px;
+            font-size: 10px;
+            font-weight: 500;
+            color: #6C5B44;
+        }
+
+        .trace-code {
+            letter-spacing: 1px;
+            font-family: monospace;
+            background: #F4EFE8;
+            padding: 4px 10px;
+            border-radius: 24px;
+            display: inline-block;
+            font-size: 13px;
+        }
+
+        /* 果农故事区  */
+        .farmer-story {
+            margin: 12px 20px 28px;
+            background: #F7F3EC;
+            border-radius: 32px;
             padding: 20px;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            backdrop-filter: blur(2px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .farmer-avatar {
+            width: 80px;
+            height: 80px;
+            background: #E1D7CB;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 2px solid white;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.05);
+        }
+
+        .farmer-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .farmer-quote {
+            flex: 1;
+        }
+
+        .farmer-name {
+            font-weight: 700;
+            font-size: 18px;
+            font-family: 'Noto Serif SC', serif;
+            color: #3C5C3F;
+        }
+
+        .farmer-desc {
+            font-size: 13px;
+            line-height: 1.45;
+            color: #5D5344;
+            margin-top: 8px;
+        }
+
+        .quote-mark {
+            font-style: italic;
+            color: #CFA66D;
+            font-weight: 500;
+        }
+
+        /* 甜酸比 + 认证按钮 */
+        .stats-flex {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin: 20px 20px 24px;
+            gap: 15px;
+        }
+
+        .ratio-card {
+            background: linear-gradient(125deg, #F4EFE6, #EDE5DB);
+            border-radius: 48px;
+            padding: 12px 24px;
+            display: inline-flex;
+            align-items: baseline;
+            gap: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+
+        .ratio-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #6A5C48;
+        }
+
+        .ratio-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #DB8A3C;
+            letter-spacing: -1px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #CFC2B0;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #5F5240;
+            transition: 0.2s ease;
+        }
+
+        /* 认养购买双卡片区域 */
+        .cta-dual {
+            margin: 8px 20px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .adopt-card, .buy-card {
+            border-radius: 28px;
+            padding: 20px;
+            background: white;
+            box-shadow: 0 12px 24px -8px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #F0E8DE;
+        }
+
+        .adopt-card {
+            background: linear-gradient(145deg, #FEFAF5, #FCF7EF);
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            font-family: 'Noto Serif SC', serif;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .price-tag {
+            font-size: 28px;
+            font-weight: 800;
+            color: #E2973C;
+            letter-spacing: -0.5px;
+        }
+
+        .price-small {
+            font-size: 14px;
+            font-weight: 400;
+            color: #8D7A62;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 16px 0;
+            font-size: 13px;
+            color: #6C5C48;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: #386A48;
+            color: white;
+            border: none;
+            padding: 14px 0;
+            width: 100%;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 16px;
             display: flex;
             justify-content: center;
             align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(56,106,72,0.2);
         }
-        .card {
-            max-width: 420px; width: 100%;
-            background: #fff;
-            border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0,40,0,0.08);
-            overflow: hidden;
+
+        .btn-secondary {
+            background: #F0EBE1;
+            color: #3E5E3C;
+            border: none;
+            padding: 12px 0;
+            width: 100%;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 15px;
         }
-        .header {
-            background: linear-gradient(135deg, #3B7A3B 0%, #1F4F1F 100%);
-            padding: 30px 20px; text-align: center; color: white;
+
+        .btn-primary:active { transform: scale(0.98); background: #2A553A; }
+
+        /* 底部氛围 */
+        .footer-note {
+            text-align: center;
+            font-size: 10px;
+            color: #B9AC99;
+            padding: 24px 20px 40px;
+            border-top: 1px solid #EFE5D9;
+            margin-top: 8px;
+            background: #FDFBF8;
         }
-        .header .logo { font-size: 48px; margin-bottom: 8px; }
-        .header h1 { font-size: 22px; font-weight: 700; letter-spacing: 1px; }
-        .header .subtitle { font-size: 13px; opacity: 0.85; margin-top: 4px; }
-        .info-list { padding: 24px 20px; }
-        .info-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 14px 0; border-bottom: 1px dashed #e0e0e0; font-size: 15px;
+
+        /* 模拟高清图标 */
+        .hd-badge {
+            background: #E6DBCE;
+            border-radius: 20px;
+            padding: 0 10px;
+            height: 22px;
+            font-size: 10px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
-        .info-item:last-child { border-bottom: none; }
-        .info-label { color: #666; font-weight: 500; flex-shrink: 0; margin-right: 12px; }
-        .info-value { color: #1a1a1a; font-weight: 600; text-align: right; word-break: break-all; }
-        .highlight { color: #3B7A3B; }
-        .badge {
-            display: inline-block; background: #e8f5e9; color: #2e7d32;
-            padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 700;
+
+        /* 模拟图片补充 */
+        .mock-fruit-icon {
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%233A6B47"><path d="M12,2C9,2,6,4,6,7c0,2.2,1.3,4,3,5c-0.8,0.9-1,2-1,3c0,2.2,1.8,4,4,4s4-1.8,4-4c0-1-0.2-2.1-1-3c1.7-1,3-2.8,3-5C18,4,15,2,12,2z M12,8c-1.1,0-2-0.9-2-2s0.9-2,2-2s2,0.9,2,2S13.1,8,12,8z"/></svg>') no-repeat center;
+            background-size: contain;
         }
-        .footer {
-            padding: 20px; text-align: center; background: #fafafa;
-            color: #888; font-size: 12px; border-top: 1px solid #f0f0f0;
+        @media (max-width: 420px) {
+            .ratio-number { font-size: 24px; }
+            .hero-title { font-size: 24px; }
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="header">
-            <div class="logo">🥝</div>
-            <h1>修文猕猴桃 · 贵长特级</h1>
-            <div class="subtitle">🍃 寻猕探心 · 一物一码溯源认证</div>
+<div class="bg-texture"></div>
+<div class="app">
+    <div class="content">
+
+        <!-- 头部 LOGO+ 品牌 -->
+        <div class="brand-header">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <img src="https://raw.githubusercontent.com/LL-tt139/xunmi/main/logo%20.png" alt="寻弥探心" onerror="this.style.display='none'; this.parentElement.innerHTML='🍃';">
+                </div>
+                <div class="logo-text">
+                    <h1>寻弥探心</h1>
+                </div>
+            </div>
+            <div class="sub-brand">
+                <span>一物一码溯源</span> · 您的专属猕猴桃档案
+            </div>
         </div>
-        <div class="info-list" id="info-container"></div>
-        <div class="footer">
-            <strong>贵州 · 修文县平滩村</strong><br>
-            国家地理标志保护产品 | 土壤天然富硒认证
+
+        <!-- 主视觉 Hero 背景图融合 -->
+        <div class="hero-card">
+            <div class="hero-bg">
+                <div class="fruit-badge">
+                    🥝 山地小种 · 猕足珍贵
+                </div>
+                <div class="hero-title">
+                    修文贵长猕猴桃
+                </div>
+                <div class="hero-sub">
+                    地理标志产品 | 阳明心学 · 自然农法
+                </div>
+            </div>
+        </div>
+
+        <!-- 果园信息档案卡片 -->
+        <div class="trace-section">
+            <div class="section-header">
+                <h3>📄 果园信息档案</h3>
+                <div class="tag-highlight">全程可溯</div>
+            </div>
+            <div class="info-grid">
+                <div class="grid-two">
+                    <div class="info-item">
+                        <div class="info-label">产品名称</div>
+                        <div class="info-value">贵长猕猴桃（特级精选）</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">产地果园</div>
+                        <div class="info-value">黄良华果园 · 3号地块</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">🗓️ 采摘日期</div>
+                        <div class="info-value">2026.10.12</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">🔍 硒含量</div>
+                        <div class="info-value">0.12 mg/kg <span class="seal-badge">富硒</span></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">🏷️ 溯源编码</div>
+                        <div class="info-value"><span class="trace-code">XMTX-A001</span></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">📦 包装日期</div>
+                        <div class="info-value">2026/4/26</div>
+                    </div>
+                </div>
+                <!-- 高清 + 专属视觉 -->
+                <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
+                    <div class="hd-badge">
+                        <span>✨</span> 高清 · 生态实拍
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 果农故事 完全复刻原文案 以及引用图片 宣传人物.png -->
+        <div class="farmer-story">
+            <div class="farmer-avatar">
+                <img src="https://raw.githubusercontent.com/LL-tt139/xunmi/main/%E5%AE%A3%E4%BC%A0%E4%BA%BA%E7%89%A9.png" alt="黄良华" onerror="this.src='https://placehold.co/80x80/E1D7CB/5F5240?text=黄'">
+            </div>
+            <div class="farmer-quote">
+                <div class="farmer-name">黄良华</div>
+                <div class="farmer-desc">
+                    返乡创业12年，从100亩到带动全村，用心种出每一颗“贵长”好果子。<br>
+                    <span class="quote-mark">“猕猴桃是有灵性的，你对它好，它就对你好。”</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 生长视频 + 检测报告 与 甜酸比区块 -->
+        <div class="stats-flex">
+            <div class="ratio-card">
+                <span class="ratio-label">甜酸比</span>
+                <span class="ratio-number">18:1</span>
+                <span style="font-size: 12px;">黄金酸甜</span>
+            </div>
+            <div class="action-buttons">
+                <button class="btn-outline" id="growthVideoBtn">🎬 生长视频</button>
+                <button class="btn-outline" id="reportBtn">📑 检测报告</button>
+            </div>
+        </div>
+
+        <!-- 认养 + 立即购买 专属礼盒区域 -->
+        <div class="cta-dual">
+            <!-- 认养计划 -->
+            <div class="adopt-card">
+                <div class="card-title">
+                    🌱 成为“弥”的主人
+                </div>
+                <div>
+                    <span class="price-tag">¥799</span>
+                    <span class="price-small"> /年/平米</span>
+                    <span style="margin-left: 8px; font-size: 12px; background: #EADFB3; padding: 2px 10px; border-radius: 20px;">认养1㎡起</span>
+                </div>
+                <div class="feature-list">
+                    <div class="feature-item">✔️ 特级果配送</div>
+                    <div class="feature-item">📹 实时监控</div>
+                    <div class="feature-item">📜 云土地证</div>
+                    <div class="feature-item">🎁 专属礼盒</div>
+                </div>
+                <button class="btn-primary" id="adoptBtn">立即认养 →</button>
+            </div>
+
+            <!-- 购买特级果 -->
+            <div class="buy-card">
+                <div class="card-title">
+                    🥝 立即购买特级果
+                </div>
+                <div class="feature-list" style="gap: 8px;">
+                    <div class="feature-item">✨ 精选单果100-120g</div>
+                    <div class="feature-item">🍃 修文核心产区直发</div>
+                    <div class="feature-item">🎁 溯源礼盒+手提袋</div>
+                </div>
+                <button class="btn-secondary" id="buyBtn">🧾 一键购买 · 顺丰包邮</button>
+            </div>
+        </div>
+
+        <!-- 底部氛围字, 再现阳明文化及地标信息 -->
+        <div class="footer-note">
+            ⛰️ 修文 · 阳明悟道之地 | 贵长猕猴桃国家地理标志保护产品<br>
+            一物一码 · 全程溯源 | 生而“猕”足珍贵
         </div>
     </div>
-    <script>
-        function getUrlParam(paramName) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(paramName);
-        }
-        const orchard = getUrlParam('orchard') || '黄良华果园 · 3号地块';
-        const farmer  = getUrlParam('farmer')  || '黄良华';
-        const date    = getUrlParam('date')    || '2026年10月12日';
-        const se      = getUrlParam('se')      || '0.12 mg/kg';
-        const sugar   = getUrlParam('sugar')   || '18:1';
-        const traceId = getUrlParam('id')      || 'XMTX-A001';
-        const infoData = [
-            { label: '🍑 产品名称', value: '贵长猕猴桃（特级精选）' },
-            { label: '📍 产地果园', value: orchard },
-            { label: '👨‍🌾 种植果农', value: farmer },
-            { label: '📅 采摘日期', value: date },
-            { label: '🧪 硒含量',    value: se + ' <span class="badge">富硒认证</span>' },
-            { label: '🍬 黄金甜酸比', value: sugar },
-            { label: '🌱 种植方式',   value: '绿肥翻压 · 林下养蚯蚓' },
-            { label: '🆔 溯源编码',   value: traceId }
-        ];
-        const container = document.getElementById('info-container');
-        infoData.forEach(item => {
-            const div = document.createElement('div');
-            div.className = 'info-item';
-            div.innerHTML = `
-                <span class="info-label">${item.label}</span>
-                <span class="info-value highlight">${item.value}</span>
-            `;
-            container.appendChild(div);
+</div>
+
+<script>
+    // 简单的交互反馈 (用户提示符合原设计预期)
+    const growthVideo = document.getElementById('growthVideoBtn');
+    const reportBtn = document.getElementById('reportBtn');
+    const adopt = document.getElementById('adoptBtn');
+    const buy = document.getElementById('buyBtn');
+
+    if(growthVideo) {
+        growthVideo.addEventListener('click', () => {
+            alert('🌿 生长视频：走进修文黄良华果园，见证“贵长”猕猴桃从开花到成熟的全生态过程。');
         });
-    </script>
+    }
+    if(reportBtn) {
+        reportBtn.addEventListener('click', () => {
+            alert('📊 检测报告：硒含量0.12mg/kg | 农残未检出 | SGS国际认证，18:1黄金甜酸比。');
+        });
+    }
+    if(adopt) {
+        adopt.addEventListener('click', () => {
+            alert('✨ 成为“弥”的主人：认养专属猕猴桃果园，VR实时查看果树，每年收获特级果礼盒。');
+        });
+    }
+    if(buy) {
+        buy.addEventListener('click', () => {
+            alert('🛒 即将跳转购买页面 — 修文贵长猕猴桃特级果礼盒装，顺丰冷链直达。');
+        });
+    }
+</script>
 </body>
 </html>
